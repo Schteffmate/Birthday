@@ -8,12 +8,18 @@ const loadTargetData = async () => {
 };
 
 const onxrloaded = async () => {
+  // XR-Pipeline starten (kommt aus deiner xr-pipeline.js)
+  initXrPipeline();
+
+  // Target-Daten laden
   const targetData = await loadTargetData();
 
+  // Image-Tracking konfigurieren
   XR8.XrController.configure({
     imageTargetData: [targetData]
   });
 
+  // Eigene Pipeline für Modell-Handling
   XR8.addCameraPipelineModules([{
     name: 'myimagepipeline',
 
@@ -52,6 +58,7 @@ const onxrloaded = async () => {
   }]);
 };
 
+// GLB-Modell laden
 const loadModel = () => {
   const loader = new THREE.GLTFLoader();
   loader.load('./birthday.glb', (gltf) => {
