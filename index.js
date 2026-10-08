@@ -1,10 +1,14 @@
-import targetData from './image-targets/target.json';
-
 let scene, camera, renderer;
 let birthdayModel = null;
 
-const onxrloaded = () => {
-  initXrPipeline();
+// Target-Daten laden
+const loadTargetData = async () => {
+  const response = await fetch('./image-targets/target.json');
+  return await response.json();
+};
+
+const onxrloaded = async () => {
+  const targetData = await loadTargetData();
 
   XR8.XrController.configure({
     imageTargetData: [targetData]
@@ -12,6 +16,7 @@ const onxrloaded = () => {
 
   XR8.addCameraPipelineModules([{
     name: 'myimagepipeline',
+
     onStart: ({canvas, GLctx}) => {
       const {scene: xrScene, camera: xrCamera, renderer: xrRenderer} =
         XR8.Threejs.xrScene();
@@ -25,7 +30,6 @@ const onxrloaded = () => {
 
     onUpdate: ({processCpuResult}) => {
       const {imageTargets} = processCpuResult;
-
       if (!imageTargets) return;
 
       const target = imageTargets[0];
@@ -58,4 +62,5 @@ const loadModel = () => {
   });
 };
 
+// XR8 starten
 window.XR8 ? onxrloaded() : window.addEventListener('xrloaded', onxrloaded);
