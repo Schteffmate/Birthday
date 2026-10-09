@@ -161,36 +161,30 @@
     });
 
     startButton.addEventListener("click", async () => {
-      if (started) return;
+startButton.disabled = true;
+status.textContent = "Kamera wird gestartet ...";
 
-      startButton.disabled = true;
-      startButton.textContent = "Wird gestartet ...";
-      status.textContent = "Kamera wird gestartet ...";
+try {
+if (!scene.hasLoaded) {
+await new Promise((resolve) => {
+scene.addEventListener("loaded", resolve, { once: true });
+});
+}
 
-      try {
-        // Auf die Initialisierung der AR-Szene warten
-        if (!scene.hasLoaded) {
-          await new Promise((resolve) => {
-            scene.addEventListener("loaded", resolve, { once: true });
-          });
-        }
+startScreen.classList.add("hidden");
 
-        mindarSystem = scene.systems["mindar-image-system"];
-        await mindarSystem.start();
+mindarSystem = scene.systems["mindar-image-system"];
+await mindarSystem.start();
 
-        started = true;
-        startScreen.classList.add("hidden");
-        status.textContent = "Suche das Bild ...";
-      } catch (error) {
-        console.error("AR konnte nicht gestartet werden:", error);
+status.textContent = "Suche das Bild ...";
+} catch (error) {
+console.error("AR-Start fehlgeschlagen:", error);
 
-        status.textContent =
-          "Kamera nicht verfügbar. Bitte erlaube den Kamerazugriff.";
+startScreen.classList.remove("hidden");
+status.textContent =
+"Fehler beim Start. Bitte Seite neu laden.";
 
-        startButton.disabled = false;
-        startButton.textContent = "Erneut versuchen";
-      }
-    });
-  </script>
-</body>
-</html>
+startButton.disabled = false;
+startButton.textContent = "Erneut versuchen";
+}
+});
