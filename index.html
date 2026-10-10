@@ -4,11 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Meine AR-Installation</title>
-
   <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
 </head>
-
 <body>
   <a-scene
     mindar-image="imageTargetSrc: ./targets.mind;"
@@ -18,33 +16,17 @@
     device-orientation-permission-ui="enabled: false">
 
     <a-assets>
-      <a-asset-item
-        id="myModel"
-        src="./model.glb">
-      </a-asset-item>
-
-      <img id="targetImage" src="./target.png">
+      <a-asset-item id="myModel" src="./model.glb"></a-asset-item>
     </a-assets>
 
-    <a-camera
-      position="0 0 0"
-      look-controls="enabled: false">
-    </a-camera>
+    <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
     <a-entity mindar-image-target="targetIndex: 0">
-      <a-plane
-        src="#targetImage"
-        position="0 0 0"
-        height="0.7"
-        width="1"
-        material="shader: flat">
-      </a-plane>
-
       <a-gltf-model
         src="#myModel"
-        position="0 0 0.1"
+        position="0 0 0"
         rotation="0 0 0"
-        scale="0.3 0.3 0.3">
+        scale="1 1 1">
       </a-gltf-model>
     </a-entity>
 
